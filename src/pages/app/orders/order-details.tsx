@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
+import type { GetOrderDetailsResponse } from "@/api/get-order-details";
 import { getOrderDetails } from "@/api/get-order-details";
 import { OrderStatus } from "@/components/order-status";
 import {
@@ -20,14 +21,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-type OrderItem = {
-  id: string;
-  product: {
-    name: string;
-  };
-  quantity: number;
-  priceInCents: number;
-};
+import { OrderDetailsSkeleton } from "./order-details-skeleton";
 
 export interface OrderDetailsProps {
   orderId: string;
@@ -35,7 +29,7 @@ export interface OrderDetailsProps {
 }
 
 export function OrderDetails({ orderId, open }: OrderDetailsProps) {
-  const { data: order } = useQuery({
+  const { data: order } = useQuery<GetOrderDetailsResponse>({
     queryKey: ["order", orderId],
     queryFn: () => getOrderDetails({ orderId }),
     enabled: open,
@@ -48,7 +42,7 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
         <DialogDescription>Detalhes do pedido</DialogDescription>
       </DialogHeader>
 
-      {order && (
+      {order ? (
         <div className="space-y-6">
           <Table>
             <TableBody>
@@ -102,7 +96,7 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {order.orderItems.map((item: OrderItem) => (
+              {order.orderItems.map((item) => (
                 <TableRow key={item.id}>
                   <TableCell>{item.product.name}</TableCell>
                   <TableCell className="text-right">{item.quantity}</TableCell>
@@ -137,6 +131,8 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
             </TableFooter>
           </Table>
         </div>
+      ) : (
+        <OrderDetailsSkeleton />
       )}
     </DialogContent>
   );

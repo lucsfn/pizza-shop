@@ -88,7 +88,7 @@ export function AccountMenu() {
             className="text-rose-500 dark:text-rose-400"
           >
             <button className="w-full" onClick={() => signOutFn()}>
-              <LogOut className="mr-2 h-4 w-4" />
+              <LogOut className="mr-2 h-4 w-4 text-rose-500 dark:text-rose-400" />
               <span>Sair</span>
             </button>
           </DropdownMenuItem>

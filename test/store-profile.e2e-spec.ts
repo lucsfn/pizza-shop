@@ -17,7 +17,7 @@ test("update profile successfully", async ({ page }) => {
 
   const toast = page.getByText("Perfil atualizado com sucesso!");
 
-  expect(toast).toBeVisible();
+  await expect(toast).toBeVisible();
 
   await page.getByRole("button", { name: "Close" }).click();
 
@@ -25,5 +25,5 @@ test("update profile successfully", async ({ page }) => {
     .getByRole("dialog", { name: "Perfil da loja" })
     .waitFor({ state: "hidden" });
 
-  expect(page.getByRole("button", { name: "Rocket Pizza" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Rocket Pizza" })).toBeVisible();
 });
